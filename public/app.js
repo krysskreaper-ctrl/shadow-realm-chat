@@ -1,3 +1,10 @@
+// Glitch effect function
+function triggerGlitch(duration = 400) {
+  const overlay = document.getElementById('glitch-overlay');
+  overlay.style.animation = `glitchFlicker ${duration}ms steps(4, end)`;
+  setTimeout(() => overlay.style.animation = 'none', duration);
+}
+
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/service-worker.js')
     .then(() => console.log('Service Worker registered'))
