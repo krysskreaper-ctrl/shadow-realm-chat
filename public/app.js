@@ -39,8 +39,13 @@ function joinChat() {
     }
 
     currentUsername = username;
-    socket.emit('join', username);
-    
+    socket.emit('join', document.getElementById('sendButton').addEventListener('click', () => {
+  const msg = document.getElementById('messageInput').value;
+  if (msg.trim() !== '') {
+    triggerGlitch(500);
+    socket.emit('chat message', msg);
+  }
+});
     // Switch to chat screen
     joinScreen.classList.remove('active');
     chatScreen.classList.add('active');
