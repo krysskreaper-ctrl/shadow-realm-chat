@@ -5,7 +5,7 @@ A dark-themed real-time chat application built with Node.js, Express, and Socket
 ## Features
 
 - Real-time messaging using WebSocket connections
-- Dark "shadow realm" themed UI
+- Dark "shadow realm" themed UI with green accents
 - User join/leave notifications
 - Live user list showing all connected users
 - Typing indicators
@@ -54,7 +54,7 @@ PORT=8080 npm start
 shadow-realm-chat/
 ├── public/
 │   ├── index.html    # Main HTML file
-│   ├── style.css     # Dark theme styling
+│   ├── style.css     # Dark theme styling with green accents
 │   └── app.js        # Client-side JavaScript
 ├── server.js         # Express and Socket.io server
 ├── package.json      # Project dependencies
