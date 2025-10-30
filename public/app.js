@@ -1,9 +1,13 @@
-}
-
+// Register service worker
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
-    .then(() => console.log('Service Worker registered'))
-    .catch(err => console.log('Service Worker failed:', err));
+  (async () => {
+    try {
+      await navigator.serviceWorker.register('/service-worker.js');
+      console.log('Service Worker registered');
+    } catch (err) {
+      console.error('Service Worker failed:', err);
+    }
+  })();
 }
 
 // Initialize socket connection
@@ -23,187 +27,114 @@ const typingIndicator = document.getElementById('typing-indicator');
 
 let currentUsername = '';
 let typingTimeout;
+let isTyping = false;
 
 // Join chat
 function joinChat() {
-    const username = usernameInput.value.trim();
-    
-    if (!username) {
-        alert('Please enter a username');
-        return;
-    }
+  const username = usernameInput.value.trim();
+  if (!username) return alert('Please enter a username');
 
-    currentUsername = username;
-    socket.emit('join', document.getElementById('sendButton').addEventListener('click', () => {
-  const msg = document.getElementById('messageInput').value;
-  if (msg.trim() !== '') {
-    triggerGlitch(500);
-    socket.emit('chat message', msg);
-  }
-});
-    // Switch to chat screen
-    joinScreen.classList.remove('active');
-    chatScreen.classList.add('active');
-    
-    // Enable chat input
-    messageInput.disabled = false;
-    sendButton.disabled = false;
-    messageInput.focus();
+  currentUsername = username;
+  socket.emit('join', username);
+
+  // Switch screens
+  joinScreen.classList.remove('active');
+  chatScreen.classList.add('active');
+
+  // Enable inputs
+  messageInput.disabled = false;
+  sendButton.disabled = false;
+  messageInput.focus();
 }
 
 // Send message
 function sendMessage() {
-    const message = messageInput.value.trim();
-    
-    if (!message) {
-        return;
-    }
+  const message = messageInput.value.trim();
+  if (!message) return;
 
-    socket.emit('chat-message', message);
-    messageInput.value = '';
-    messageInput.focus();
+  socket.emit('chat-message', message);
+  messageInput.value = '';
+  messageInput.focus();
 }
 
-// Handle typing indicator
-let isTyping = false;
+// Typing indicator
 messageInput.addEventListener('input', () => {
-    if (!isTyping) {
-        isTyping = true;
-        socket.emit('typing', true);
-    }
+  if (!isTyping) {
+    isTyping = true;
+    socket.emit('typing', true);
+  }
 
-    clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(() => {
-        isTyping = false;
-        socket.emit('typing', false);
-    }, 1000);
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(() => {
+    isTyping = false;
+    socket.emit('typing', false);
+  }, 1000);
 });
 
 // Add message to chat
 function addMessage(messageData, isSystem = false) {
-    const messageEl = document.createElement('div');
-    messageEl.className = isSystem ? 'message system' : 'message';
-    
-    if (isSystem) {
-        messageEl.innerHTML = `
-            <div class="message-content">${messageData.message}</div>
-        `;
-    } else {
-        const timestamp = new Date(messageData.timestamp).toLocaleTimeString();
-        const isOwnMessage = messageData.username === currentUsername;
-        
-        messageEl.innerHTML = `
-            <div class="message-header">
-                <span class="username">${isOwnMessage ? 'You' : messageData.username}</span>
-                <span class="timestamp">${timestamp}</span>
-            </div>
-            <div class="message-content">${escapeHtml(messageData.message)}</div>
-        `;
-    }
-    
-    messagesDiv.appendChild(messageEl);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  const messageEl = document.createElement('div');
+  messageEl.className = isSystem ? 'message system' : 'message';
+
+  if (isSystem) {
+    messageEl.innerHTML = `<div class="message-content">${messageData.message}</div>`;
+  } else {
+    const timestamp = new Date(messageData.timestamp).toLocaleTimeString();
+    const isOwn = messageData.username === currentUsername;
+    messageEl.innerHTML = `
+      <div class="message-header">
+        <span class="username">${isOwn ? 'You' : messageData.username}</span>
+        <span class="timestamp">${timestamp}</span>
+      </div>
+      <div class="message-content">${escapeHtml(messageData.message)}</div>
+    `;
+  }
+
+  messagesDiv.appendChild(messageEl);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 // Escape HTML to prevent XSS
 function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
 // Update user list
 function updateUserList(users) {
-    userList.innerHTML = '';
-    userCount.textContent = `${users.length} user${users.length !== 1 ? 's' : ''} online`;
-    
-    users.forEach(user => {
-        const li = document.createElement('li');
-        li.textContent = user;
-        userList.appendChild(li);
-    });
+  userList.innerHTML = '';
+  userCount.textContent = `${users.length} user${users.length !== 1 ? 's' : ''} online`;
+
+  users.forEach(user => {
+    const li = document.createElement('li');
+    li.textContent = user;
+    userList.appendChild(li);
+  });
 }
 
-// Socket event listeners
-socket.on('history', (messages) => {
-    messages.forEach(msg => addMessage(msg));
+// Socket events
+socket.on('history', messages => messages.forEach(addMessage));
+socket.on('chat-message', addMessage);
+socket.on('user-joined', data => addMessage({ message: `${data.username} entered the shadow realm`, timestamp: data.timestamp }, true));
+socket.on('user-left', data => addMessage({ message: `${data.username} left the shadow realm`, timestamp: data.timestamp }, true));
+socket.on('user-list', updateUserList);
+socket.on('user-typing', data => {
+  typingIndicator.textContent = data.isTyping ? `${data.username} is typing...` : '';
 });
-
-socket.on('chat-message', (messageData) => {
-    addMessage(messageData);
-});
-
-socket.on('user-joined', (data) => {
-    addMessage({
-        message: `${data.username} entered the shadow realm`,
-        timestamp: data.timestamp
-    }, true);
-});
-
-socket.on('user-left', (data) => {
-    addMessage({
-        message: `${data.username} left the shadow realm`,
-        timestamp: data.timestamp
-    }, true);
-});
-
-socket.on('user-list', (users) => {
-    updateUserList(users);
-});
-
-socket.on('user-typing', (data) => {
-    if (data.isTyping) {
-        typingIndicator.textContent = `${data.username} is typing...`;
-    } else {
-        typingIndicator.textContent = '';
-    }
-});
-
-socket.on('error', (error) => {
-    console.error('Socket error:', error);
-    alert(error);
-});
-
-socket.on('connect_error', (error) => {
-    console.error('Connection error:', error);
-    alert('Failed to connect to the server. Please try again.');
-});
-
-socket.on('disconnect', () => {
-    console.log('Disconnected from server');
-    addMessage({
-        message: 'Disconnected from server',
-        timestamp: new Date().toISOString()
-    }, true);
-});
-
+socket.on('error', error => console.error('Socket error:', error));
+socket.on('connect_error', () => alert('Failed to connect to the server.'));
+socket.on('disconnect', () => addMessage({ message: 'Disconnected from server', timestamp: new Date().toISOString() }, true));
 socket.on('reconnect', () => {
-    console.log('Reconnected to server');
-    addMessage({
-        message: 'Reconnected to server',
-        timestamp: new Date().toISOString()
-    }, true);
-    
-    // Rejoin with username
-    if (currentUsername) {
-        socket.emit('join', currentUsername);
-    }
+  addMessage({ message: 'Reconnected to server', timestamp: new Date().toISOString() }, true);
+  if (currentUsername) socket.emit('join', currentUsername);
 });
 
-// Event listeners
+// UI event listeners
 joinButton.addEventListener('click', joinChat);
-usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        joinChat();
-    }
-});
-
+usernameInput.addEventListener('keypress', e => e.key === 'Enter' && joinChat());
 sendButton.addEventListener('click', sendMessage);
-messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
+messageInput.addEventListener('keypress', e => e.key === 'Enter' && sendMessage());
 
 // Focus on username input on load
 usernameInput.focus();
