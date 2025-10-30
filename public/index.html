@@ -5,20 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#00ff00">
   <link rel="manifest" href="manifest.json">
-  <title>👻 Shadow Realm Chat</title>
   <link rel="stylesheet" href="style.css">
+  <title>☣️ Shadow Realm Chat</title>
 </head>
 
 <body>
   <header>
-    <h1>👻 Shadow Realm Chat</h1>
+    <h1>
+      <span class="biohazard">☣️</span>
+      Shadow Realm Chat
+    </h1>
     <span id="user-count">0 users online</span>
   </header>
 
   <!-- Join Screen -->
   <section id="join-screen" class="screen active">
     <h2>Enter the Shadow Realm</h2>
-    <input id="username-input" type="text" placeholder="Enter your username..." maxlength="20" autocomplete="off">
+    <input id="username-input" type="text" placeholder="Enter your username..." maxlength="20">
     <button id="join-button">Join Chat</button>
   </section>
 
@@ -34,13 +37,13 @@
       <div id="typing-indicator" class="typing-indicator"></div>
 
       <div class="input-container">
-        <input id="message-input" type="text" placeholder="Type a message..." maxlength="500" autocomplete="off" disabled>
+        <input id="message-input" type="text" placeholder="Type a message..." maxlength="500" disabled>
         <button id="send-button" disabled>Send</button>
       </div>
     </main>
   </section>
 
-  <script src="/socket.io/socket.io.js"></script>
+  <script src="/socket.io/socket.io.js" defer></script>
   <script src="app.js" defer></script>
 </body>
 </html>
