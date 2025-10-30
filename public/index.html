@@ -1,54 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00ff00">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow Realm Chat</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#00ff00">
+  <link rel="manifest" href="manifest.json">
+  <title>👻 Shadow Realm Chat</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <h1>👻 Shadow Realm Chat</h1>
-            <div class="user-count">
-                <span id="user-count">0 users online</span>
-            </div>
-        </header>
+  <header>
+    <h1>👻 Shadow Realm Chat</h1>
+    <span id="user-count">0 users online</span>
+  </header>
 
-        <div id="join-screen" class="screen active">
-            <div class="join-box">
-                <h2>Enter the Shadow Realm</h2>
-                <input type="text" id="username-input" placeholder="Enter your username..." maxlength="20" autocomplete="off">
-                <button id="join-button">Join Chat</button>
-            </div>
-        </div>
+  <!-- Join Screen -->
+  <section id="join-screen" class="screen active">
+    <h2>Enter the Shadow Realm</h2>
+    <input id="username-input" type="text" placeholder="Enter your username..." maxlength="20" autocomplete="off">
+    <button id="join-button">Join Chat</button>
+  </section>
 
-        <div id="chat-screen" class="screen">
-            <div class="chat-container">
-                <aside class="sidebar">
-                    <h3>Users Online</h3>
-                    <ul id="user-list"></ul>
-                </aside>
+  <!-- Chat Screen -->
+  <section id="chat-screen" class="screen">
+    <aside>
+      <h3>Users Online</h3>
+      <ul id="user-list"></ul>
+    </aside>
 
-                <main class="chat-main">
-                    <div id="messages" class="messages"></div>
-                    
-                    <div id="typing-indicator" class="typing-indicator"></div>
+    <main>
+      <div id="messages" class="messages"></div>
+      <div id="typing-indicator" class="typing-indicator"></div>
 
-                    <div class="input-container">
-                        <input type="text" id="message-input" placeholder="Type a message..." maxlength="500" autocomplete="off" disabled>
-                        <button id="send-button" disabled>Send</button>
-                    </div>
-                </main>
-            </div>
-        </div>
-    </div>
+      <div class="input-container">
+        <input id="message-input" type="text" placeholder="Type a message..." maxlength="500" autocomplete="off" disabled>
+        <button id="send-button" disabled>Send</button>
+      </div>
+    </main>
+  </section>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="app.js"></script>
-    
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
