@@ -1,291 +1,287 @@
-* {
+/* --- CSS STYLES FOR SHADOW REALM THEME --- */
+:root {
+    --color-background: #000000;
+    --color-text-primary: #FF0000; /* Classic blood red */
+    --color-text-secondary: #00FF00; /* Neon green (biohazard) */
+    --color-card-bg: #111111;
+    --color-button-main: #CC0000;
+    --color-button-shadow: #880000;
+    --color-success: #00CC00;
+}
+
+/* Apply dark background and center content */
+body {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: 'Inter', sans-serif;
     margin: 0;
-    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 20px;
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: #e0e0e0;
-    min-height: 100vh;
+/* --- GLITCH ANIMATION STYLES (MODIFIED FOR WHITE/FUZZY) --- */
+@keyframes screen-glitch {
+    /* Chaotic, jumpy animation frames for a distorted look */
+    0% { transform: translate(0); filter: saturate(1) brightness(1) contrast(1) hue-rotate(0deg); opacity: 1; }
+    5% { transform: translate(-5px, 2px) skewX(10deg); filter: saturate(0) brightness(1.5) contrast(2) blur(1px); opacity: 0.8; } /* Desaturate, brighten, contrast */
+    10% { transform: translate(5px, -3px) skewX(-15deg); filter: saturate(0.2) brightness(1.2) contrast(1.5) blur(0.5px); opacity: 1; } /* Slightly less desaturated */
+    15% { transform: translate(-3px, 1px) skewX(5deg); filter: saturate(0) brightness(1.8) contrast(2.5) blur(0); opacity: 0.9; } /* More extreme white flash */
+    20% { transform: translate(0); filter: none; opacity: 1; }
+    25% { transform: translate(-7px, 5px) skewY(20deg); filter: saturate(0.1) brightness(1.3) contrast(1.8) blur(2px); opacity: 0.7; }
+    30% { transform: translate(7px, -5px) skewY(-10deg); filter: saturate(0) brightness(1.6) contrast(2.2) blur(1px); opacity: 1; }
+    35% { transform: translate(-2px, 3px) skewX(10deg); filter: saturate(0.3) brightness(1.1) contrast(1.3) blur(0.5px); opacity: 0.8; }
+    40% { transform: translate(0); filter: none; opacity: 1; }
+    45% { transform: translate(10px, -2px) skewY(-5deg); filter: saturate(0) brightness(1.7) contrast(2.3) blur(1.5px); opacity: 0.9; }
+    50% { transform: translate(-10px, 4px) skewX(15deg); filter: saturate(0.1) brightness(1.4) contrast(1.9) blur(0.5px); opacity: 0.7; }
+    55% { transform: translate(5px, -3px) skewY(10deg); filter: saturate(0) brightness(1.5) contrast(2.1) blur(1px); opacity: 1; }
+    60% { transform: translate(-5px, 2px) skewX(-5deg); filter: saturate(0.2) brightness(1.2) contrast(1.6) blur(0.5px); opacity: 0.8; }
+    65% { transform: translate(0); filter: none; opacity: 1; }
+    70% { transform: translate(3px, 5px) skewY(5deg); filter: saturate(0) brightness(1.9) contrast(2.6) blur(2px); opacity: 0.7; }
+    75% { transform: translate(-3px, -5px) skewX(-10deg); filter: saturate(0.1) brightness(1.3) contrast(1.7) blur(1px); opacity: 0.9; }
+    80% { transform: translate(0); filter: none; opacity: 1; }
+    85% { transform: translate(5px, 2px) skewX(5deg); filter: saturate(0) brightness(1.6) contrast(2.2) blur(0.5px); opacity: 0.8; }
+    90% { transform: translate(-5px, -3px) skewY(15deg); filter: saturate(0.2) brightness(1.1) contrast(1.4) blur(1px); opacity: 1; }
+    95% { transform: translate(3px, 1px) skewX(-5deg); filter: saturate(0) brightness(1.8) contrast(2.4) blur(0.5px); opacity: 0.9; }
+    100% { transform: translate(0); filter: none; opacity: 1; }
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+/* Apply the harsh, rapid animation to the body during the transition */
+.glitch-active {
+    animation: screen-glitch 0.6s steps(1) forwards; 
+    /* Ensure the body is treated as a transform container */
+    perspective: 1000px;
+    position: relative; /* Needed for stacking context */
 }
+/* --- END GLITCH ANIMATION STYLES --- */
 
+/* Main Chat Header */
 header {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 1rem 2rem;
-    border-bottom: 2px solid #9d4edd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
 }
 
 header h1 {
-    color: #c77dff;
-    font-size: 1.8rem;
-    text-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
-}
-
-.user-count {
-    color: #7b2cbf;
-    font-size: 0.9rem;
-}
-
-.screen {
-    display: none;
-    flex: 1;
-}
-
-.screen.active {
+    /* Use Flexbox to ensure perfect vertical and horizontal centering of text and images */
     display: flex;
-}
-
-/* Join Screen */
-#join-screen {
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
+    font-family: 'Cinzel Decorative', serif; 
+    font-weight: 700; /* Bold for definition */
+    font-size: 3.5rem;
+    color: var(--color-background); /* Makes text invisible, relying on shadow */
+    /* Added light grey highlight for definition */
+    text-shadow: 
+        0 0 2px rgba(200, 200, 200, 0.9), /* Light grey inner highlight */
+        0 0 5px rgba(255, 0, 0, 0.9),    /* Sharp base red glow */
+        0 0 15px rgba(255, 0, 0, 0.6),   /* Wider, softer red glow */
+        0 0 25px rgba(255, 0, 0, 0.3);  /* Outer red aura */
+    margin: 0 0 10px 0;
 }
 
-.join-box {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 3rem;
-    border-radius: 15px;
-    border: 2px solid #9d4edd;
-    box-shadow: 0 0 30px rgba(157, 78, 221, 0.3);
+/* User Status Container (simplified) */
+#user-status-container {
     text-align: center;
-    min-width: 400px;
+    margin-bottom: 20px;
+    color: #777;
 }
 
-.join-box h2 {
-    color: #c77dff;
-    margin-bottom: 2rem;
-    font-size: 1.5rem;
-}
-
-.join-box input {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid #7b2cbf;
-    border-radius: 8px;
-    color: #e0e0e0;
-    font-size: 1rem;
-}
-
-.join-box input:focus {
-    outline: none;
-    border-color: #c77dff;
-    box-shadow: 0 0 10px rgba(199, 125, 255, 0.3);
-}
-
-.join-box button,
-#send-button {
-    width: 100%;
-    padding: 0.8rem;
-    background: linear-gradient(135deg, #7b2cbf, #9d4edd);
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.join-box button:hover,
-#send-button:hover:not(:disabled) {
-    background: linear-gradient(135deg, #9d4edd, #c77dff);
-    box-shadow: 0 0 20px rgba(157, 78, 221, 0.5);
-    transform: translateY(-2px);
-}
-
-.join-box button:active,
-#send-button:active:not(:disabled) {
-    transform: translateY(0);
-}
-
-/* Chat Screen */
-.chat-container {
-    display: flex;
-    flex: 1;
+/* Base styles for the main screens (Join/Chat) */
+.screen {
+    background-color: var(--color-card-bg);
+    border: 2px solid #333;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    position: relative;
     overflow: hidden;
+    width: 90%;
+    max-width: 400px;
+    margin: 10px 0;
 }
 
-.sidebar {
-    width: 250px;
-    background: rgba(0, 0, 0, 0.3);
-    border-right: 2px solid #9d4edd;
-    padding: 1rem;
-    overflow-y: auto;
+/* Initially hide all screens until authentication is ready */
+.screen { display: none; }
+.screen.active { display: flex; flex-direction: column; } /* Chat screen is flex */
+#join-screen.active { display: block; } /* Join screen is block */
+
+/* Styling for the Join Screen with the FOG EFFECT */
+#join-screen {
+    /* NOTE: URL for fog.png needs to be external or relative to run in a real environment */
+    background-image: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 70%), url('fog.png'); 
+    background-size: 100% 100%, cover;
+    background-repeat: no-repeat;
+    background-position: bottom, bottom center;
 }
 
-.sidebar h3 {
-    color: #c77dff;
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+#join-screen h2 {
+    color: var(--color-background); 
+    font-family: 'Cinzel Decorative', serif; 
+    font-size: 2.0rem; 
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.7);
+    margin-top: 0;
 }
 
-#user-list {
-    list-style: none;
+/* Input Fields */
+#username-input, #message-input, .doodle-controls button {
+    background-color: #333;
+    color: var(--color-text-secondary);
+    border: 1px solid #555;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    width: 100%;
+    font-size: 1rem;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
 
-#user-list li {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    background: rgba(157, 78, 221, 0.1);
-    border-radius: 5px;
-    border-left: 3px solid #7b2cbf;
+/* Buttons */
+.button-base {
+    background-color: var(--color-button-main);
+    color: #fff;
+    /* Grungy Buttons Style */
+    border: 1px solid #440000; /* Darker, rustic border */
+    padding: 12px 15px;
+    border-radius: 2px; /* Sharper corners for a beat-up look */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 3px var(--color-button-shadow), 0 0 0 1px #222; /* Less smooth shadow for a heavy feel */
+}
+.button-base:hover { background-color: var(--color-text-primary); }
+.button-base:active { 
+    transform: translateY(1px); /* Reduced movement for a solid feel */
+    box-shadow: 0 1px var(--color-button-shadow), 0 0 0 1px #222; /* Appears more recessed */
 }
 
-.chat-main {
-    flex: 1;
+#join-button { width: 100%; }
+
+/* Chat Screen Layout */
+#chat-screen {
+    height: 80vh; 
+    padding: 15px;
+    border: none;
+    box-shadow: none;
+}
+
+/* Defined Chat Area */
+#chat-screen > main {
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    flex-grow: 1;
+    background: var(--color-card-bg);
+    padding: 15px;
+    margin-top: 0; 
+    height: 100%; 
+    
+    /* The requested "window style" distal border */
+    border: 2px solid #333; /* Base side borders */
+    border-top: 5px solid var(--color-text-primary); /* Prominent red top border */
+    border-radius: 0 0 4px 4px; /* Only bottom corners rounded */
+    
+    /* Inner glow/sunken effect for the message window */
+    box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.5), 0 0 8px rgba(255, 0, 0, 0.3);
 }
 
-.messages {
-    flex: 1;
-    overflow-y: auto;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+#messages {
+    flex-grow: 1;
+    overflow-y: auto; 
+    padding: 0 5px; 
+    margin-bottom: 10px;
+    text-align: left;
+
+    /* --- Enlarged Inner Graphic (The Black Hole) --- */
+    /* NOTE: URL for blackhole.png needs to be external or relative to run in a real environment */
+    background-image: url('blackhole.png'); 
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 80%; 
+    filter: grayscale(100%) opacity(0.08); 
 }
 
-.message {
-    margin-bottom: 1rem;
-    padding: 0.8rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    border-left: 3px solid #7b2cbf;
+.message-line {
+    margin-bottom: 8px;
+    line-height: 1.3;
 }
 
-.message.system {
-    background: rgba(157, 78, 221, 0.1);
-    border-left-color: #9d4edd;
-    font-style: italic;
-    color: #c77dff;
-}
-
-.message-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-}
-
-.username {
-    color: #c77dff;
-    font-weight: 600;
-}
-
-.timestamp {
-    color: #888;
-    font-size: 0.8rem;
-}
-
-.message-content {
-    color: #e0e0e0;
-    word-wrap: break-word;
-}
-
-.typing-indicator {
-    min-height: 20px;
-    padding: 0.5rem 1rem;
-    color: #c77dff;
-    font-size: 0.9rem;
-    font-style: italic;
-}
+.message-user { color: #aaa; font-weight: bold; }
+/* Ensure message text is above the background graphic */
+.message-text { color: #fff; position: relative; z-index: 1; }
+.message-image { max-width: 100%; height: auto; border-radius: 8px; margin-top: 5px; border: 2px solid var(--color-text-primary); position: relative; z-index: 1; }
 
 .input-container {
     display: flex;
-    gap: 0.5rem;
+    gap: 10px;
+    padding-top: 10px;
+    align-items: center;
 }
 
-#message-input {
-    flex: 1;
-    padding: 0.8rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid #7b2cbf;
-    border-radius: 8px;
-    color: #e0e0e0;
-    font-size: 1rem;
+.input-container input { flex-grow: 1; margin: 0; }
+.input-container button { height: 48px; }
+
+/* Doodle Modal */
+.modal {
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
-
-#message-input:focus {
-    outline: none;
-    border-color: #c77dff;
-    box-shadow: 0 0 10px rgba(199, 125, 255, 0.3);
+.modal.active { display: flex; }
+.modal-content {
+    background-color: var(--color-card-bg);
+    padding: 20px;
+    border: 2px solid var(--color-text-primary);
+    border-radius: 12px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
 }
-
-#message-input:disabled,
-#send-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+#doodle-canvas {
+    border: 1px solid #444;
+    background-color: #000;
+    cursor: crosshair;
+    margin: 10px 0;
+    max-width: 100%;
+    height: auto;
 }
-
-#send-button {
-    width: auto;
-    padding: 0.8rem 2rem;
+.doodle-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-    width: 8px;
+.doodle-controls input[type="file"], #loading-indicator {
+    width: 100%;
+    text-align: center;
+    color: var(--color-text-secondary);
 }
+#color-picker { width: 60px; height: 48px; margin: 0; padding: 0; border: none; }
+.doodle-controls button { width: auto; margin: 0; }
 
-::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-::-webkit-scrollbar-thumb {
-    background: #7b2cbf;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #9d4edd;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 200px;
-    }
-
-    .join-box {
-        min-width: 300px;
-        padding: 2rem;
-    }
-
-    header h1 {
-        font-size: 1.4rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .chat-container {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        max-height: 150px;
-        border-right: none;
-        border-bottom: 2px solid #9d4edd;
-    }
-
-    .join-box {
-        min-width: 250px;
-        padding: 1.5rem;
-    }
+@media (max-width: 600px) {
+    header h1 { font-size: 2.5rem; }
+    #chat-screen { height: 90vh; }
+    .doodle-controls { justify-content: space-around; }
+    .doodle-controls button { flex-grow: 1; }
 }
