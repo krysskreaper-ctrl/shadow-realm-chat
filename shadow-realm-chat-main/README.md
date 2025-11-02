@@ -1,4 +1,3 @@
-
 # shadow-realm-chat
 
 A dark-themed real-time chat application built with Node.js, Express, and Socket.io.
@@ -24,7 +23,7 @@ cd shadow-realm-chat
 ```
 
 2. Install dependencies:
-```bash 
+```bash
 npm install
 ```
 
@@ -38,18 +37,13 @@ npm start
 The application will be available at `http://localhost:3000`
 
 For development:
-
-
 ```bash
 npm run dev
-
 ```
 
 ## Configuration
 
-
 You can set a custom port using the PORT environment variable:
-
 ```bash
 PORT=8080 npm start
 ```
@@ -90,8 +84,6 @@ shadow-realm-chat/
 Feel free to open issues or submit pull requests to improve the application.
 
 ## License
- 
-ISC 
 
-
+ISC
 
