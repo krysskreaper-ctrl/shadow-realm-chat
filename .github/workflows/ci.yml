@@ -34,6 +34,7 @@ jobs:
     - name: Start server (smoke test)
       run: |
         timeout 10s npm start || code=$?
+        # Exit code 124 means timeout (expected), 0 means success
         if [ $code -ne 124 ] && [ $code -ne 0 ]; then
           echo "Server failed to start"
           exit 1
