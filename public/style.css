@@ -22,6 +22,71 @@ body {
     overflow-x: hidden;
     padding: 20px;
     box-sizing: border-box;
+    position: relative; 
+    z-index: 1; 
+}
+
+/* --- VIGNETTE EFFECT (body::before) --- */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; 
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.9), inset 0 0 200px rgba(0,0,0,0.7); 
+    z-index: 1000; 
+}
+
+/* --- GRITTY OUTER EDGE (intricate grayscale border) --- */
+.outer-border-intricate {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image: url('intricate_border.png'); 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center center;
+    filter: grayscale(100%) brightness(0.5); 
+    opacity: 0.15; 
+    z-index: 998; 
+}
+
+/* --- BLOOD SPLATTER GRAPHIC (outermost border) --- */
+.outer-border-blood {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image: url('blood_splatter.png'); 
+    background-size: 200px; 
+    background-repeat: repeat;
+    background-blend-mode: multiply; 
+    opacity: 0.2; 
+    filter: hue-rotate(330deg) saturate(2); 
+    z-index: 999; 
+}
+
+/* --- RED FLICKER KEYFRAMES --- */
+@keyframes flicker-red {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: none;
+        color: #777; 
+    }
+    20%, 24%, 55% {
+        text-shadow: 0 0 5px var(--color-text-primary), 0 0 10px var(--color-text-primary);
+        color: var(--color-text-primary); 
+    }
+}
+
+.flickering-status {
+    animation: flicker-red 5s infinite steps(1); 
 }
 
 /* --- GLITCH ANIMATION STYLES (MODIFIED FOR WHITE/FUZZY) --- */
@@ -64,6 +129,8 @@ header {
     text-align: center;
     width: 100%;
     max-width: 400px;
+    position: relative;
+    z-index: 2;
 }
 
 header h1 {
@@ -217,6 +284,45 @@ header h1 {
 /* Ensure message text is above the background graphic */
 .message-text { color: #fff; position: relative; z-index: 1; }
 .message-image { max-width: 100%; height: auto; border-radius: 8px; margin-top: 5px; border: 2px solid var(--color-text-primary); position: relative; z-index: 1; }
+
+/* Message styles for app.js */
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(17, 17, 17, 0.7);
+    border-radius: 8px;
+    border-left: 3px solid var(--color-text-primary);
+}
+
+.message.system {
+    border-left-color: var(--color-text-secondary);
+    background-color: rgba(0, 255, 0, 0.05);
+    font-style: italic;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.message .username {
+    color: var(--color-text-secondary);
+    font-weight: bold;
+}
+
+.message .timestamp {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.message-content {
+    color: #fff;
+    word-wrap: break-word;
+    position: relative;
+    z-index: 1;
+}
 
 .input-container {
     display: flex;
