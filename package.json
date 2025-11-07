@@ -1,14 +1,24 @@
 {
   "name": "shadow-realm-chat",
   "version": "1.0.0",
-  "description": "dark chat zombyBomby",
+  "description": "A dark-themed real-time chat application built with Node.js, Express, and Socket.io",
   "main": "server.js",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No tests specified\" && exit 0"
   },
-  "keywords": [],
+  "keywords": [
+    "chat",
+    "websocket",
+    "socket.io",
+    "real-time",
+    "express"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
